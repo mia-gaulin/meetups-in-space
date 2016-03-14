@@ -6,6 +6,7 @@ gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'sinatra-flash'
+gem 'will_paginate', '~> 3.0.5'
 
 group :development, :test do
   gem 'capybara'

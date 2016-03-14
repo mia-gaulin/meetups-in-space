@@ -1,5 +1,7 @@
 require 'sinatra'
 require_relative 'config/application'
+require 'will_paginate'
+require 'will_paginate/active_record'
 
 helpers do
   def current_user
