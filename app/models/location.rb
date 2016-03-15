@@ -1,3 +1,3 @@
 class Location < ActiveRecord::Base
-  has many :meetups
+  has_many :meetups
 end
