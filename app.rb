@@ -2,6 +2,7 @@ require 'sinatra'
 require_relative 'config/application'
 require 'will_paginate'
 require 'will_paginate/active_record'
+enable :sessions
 
 helpers do
   def current_user
@@ -33,15 +34,78 @@ get '/sign_out' do
 end
 
 get '/meetups' do
-  @meetups = Meetup.paginate(:page => params[:page], :per_page => 5)
+  @meetups = Meetup.order(:title).paginate(:page => params[:page], :per_page => 3)
 
   erb :'meetups/index'
 end
 
-get '/meetups/:id' do
+post '/meetups' do
+  current_user
 
+  if @current_user.nil?
+    flash[:notice] = "You must be logged in to create a new meetup!"
+    redirect '/meetups/create'
+  else
+    @title = params['title']
+    @description = params['description']
+    @meetup_date = params['meetup_date']
+    @location = params['location']
+
+    session[:title] = params['title']
+    session[:description] = params['description']
+    session[:meetup_date] = params['meetup_date']
+    session[:location] = params['location']
+
+    location = Location.find_by(name: @location)
+
+    @meetup = Meetup.new(title: @title, location: location, description: @description, meetup_date: @meetup_date, user_id: @current_user.id)
+
+    if @meetup.valid?
+      @meetup.save!
+      flash[:notice] = "You have created a new meetup!"
+      redirect "/meetups"
+
+    else
+
+      flash[:notice] = "Please make sure you've filled in all of the fields."
+      session[:failure] = "Please make sure you've filled in all of the fields."
+
+      if @title != "" then
+        session[:title] = @title end
+
+      if @location != "" then
+        session[:location] = @location end
+
+      if @description != "" then
+        session[:description] = @description end
+
+      if @meetup_date != "" then
+        session[:meetup_date] = @meetup_date end
+
+      redirect '/meetups/create'
+    end
+  end
 end
 
 get '/meetups/create' do
+  if session[:failure]
+    @description = session[:description]
+    @title = session[:title]
+    @meetup_date = session[:meetup_date]
+    @location = session[:location]
+    session.delete(:description)
+    session.delete(:title)
+    session.delete(:location)
+    session.delete(:meetup_date)
+  end
+  erb :'meetups/new'
+end
 
+get '/meetups/:id' do
+  @meetup = Meetup.find(params[:id])
+  @creator = User.find(@meetup.user_id)
+  @attendees = Attendee.where(meetup: @meetup)
+  @users = @attendees.pluck(:user_id)
+
+  erb :'meetups/show'
 end

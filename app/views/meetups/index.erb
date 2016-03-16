@@ -1,7 +1,10 @@
 <h1>Meetups</h1>
-<%= will_paginate @meetups %>
 <ul>
 <% @meetups.each do |meetup| %>
-<li><%= meetup.title %></li>
+<li><a href="/meetups/<%= meetup.id %>"><%= meetup.title %></a></li>
 <% end %>
 </ul>
+
+<%= will_paginate @meetups %>
+
+<a href="/meetups/create">New Meetup</a>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Meetups</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/normalize.css" />
+    <link rel="stylesheet" href="/stylesheets/app.css" />
+  </head>
+  <body>
+
+    <div class="top-bar">
+      <div class="container">
+        <a class="logo" href="/">Meetups in Space</a>
+
+        <ul class="top-bar-section">
+          
+            <li>Signed in as jarlax1</a></li>
+            <li><a href="/sign_out">Sign Out</a></li>
+          
+        </ul>
+      </div>
+    </div>
+
+    
+
+    <div class="container">
+      <h1>Create New Meetup</h1>
+
+<form method="post" action="/meetups">
+  <label for="title">Title:</label>
+  <input type="text" name="title" id="title" /><br><br>
+  <label for="location">Location:</label>
+  <select name="location">
+    <option value="Mercury">Mercury</option>
+    <option value="Venus">Venus</option>
+    <option value="Earth">Earth</option>
+    <option value="Mars">Mars</option>
+    <option value="Jupiter">Jupiter</option>
+    <option value="Saturn">Saturn</option>
+    <option value="Uranus">Uranus</option>
+    <option value="Neptune">Neptune</option>
+    <option value="Pluto">Pluto</option>
+  </select><br><br>
+  <label for="meetup_date">Date of meetup:</label>
+  <input type="date" name="meetup_date" id="meetup_date" /><br><br>
+  <label for="description">Description:</label>
+  <input type="text" name="description" id="description" />
+
+  <input type="submit" value="Submit" />
+</form>
+
+    </div>
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/app.js"></script>
+  </body>
+</html>

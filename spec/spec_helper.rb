@@ -2,6 +2,8 @@ ENV["RACK_ENV"] ||= "test"
 require 'rspec'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
+require 'database_cleaner'
+require 'factory_girl'
 
 require_relative '../app.rb'
 Dir[__dir__ + '/support/*.rb'].each { |file| require_relative file }
@@ -15,4 +17,17 @@ RSpec.configure do |config|
   end
   OmniAuth.config.test_mode = true
   config.include AuthenticationHelper
+end
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end

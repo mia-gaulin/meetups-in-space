@@ -1,0 +1,12 @@
+<h1><%= @meetup.title %></h1>
+
+<h3><li>Date: <%= @meetup.meetup_date %></li>
+  <li>Description: <%= @meetup.description %></li>
+  <li>Location: <%= @meetup.location.name %></li>
+  <li>Created by: <%= @creator.username %></li></h3>
+
+<h3>Who is attending?</h3>
+  <% @users.each do |user| %>
+  <% name = User.find(user) %>
+  <li><%= name.username %>  <img src="<%= name.avatar_url %>" width="100" height="100" alt="User Avatar"></li>
+  <% end %>
